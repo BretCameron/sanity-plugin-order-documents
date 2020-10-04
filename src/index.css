@@ -1,0 +1,63 @@
+:root {
+  --border-style: 1px solid rgba(0, 0, 0, 0.1);
+  --background-color: #e4e8ed;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  position: absolute;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  min-width: 220px;
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+.listItem:first-child {
+  border-top: var(--border-style);
+}
+
+.listItem {
+  padding: 5px;
+  border: var(--border-style);
+  border-top: 0;
+}
+
+.document {
+  margin: 0;
+  padding: 0 10px;
+  max-width: 66%;
+}
+
+.outerWrapper {
+  max-width: 96rem;
+  width: 100%;
+  margin: 0 auto;
+  background: white;
+  border: 1rem solid var(--background-color);
+}
+
+.innerWrapper {
+  padding: 0.5rem 3rem 3rem 3rem;
+  margin-top: 2rem;
+}
+
+.marginTop {
+  margin-top: 3rem;
+}
+
+.noTopMargin {
+  margin-top: 0;
+}
+
+hr {
+  border-top: 1px solid #ddd;
+}
+
+.rule {
+  margin-top: 1.25rem;
+}
