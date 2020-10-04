@@ -57,6 +57,7 @@ To develop this plugin, clone it into a local directory. Then, navigate to the r
 ```sh
 yarn
 yarn link
+yarn start
 ```
 
 Next, navigate to a Sanity Studio project and run:
@@ -65,10 +66,12 @@ Next, navigate to a Sanity Studio project and run:
 yarn link "sanity-plugin-order-documents"
 ```
 
-Finally, open `sanity.json` in the Sanity Studio project and append "order-documents" to the `"plugins"` array:
+Open `sanity.json` in the Sanity Studio project and append "order-documents" to the `"plugins"` array:
 
 ```json
 "plugins": [
   "order-documents"
 ],
 ```
+
+We're already watching our plugin for changes, so all that's left is to run our Sanity Studio with `sanity start`.
