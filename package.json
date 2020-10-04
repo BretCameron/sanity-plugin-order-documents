@@ -7,7 +7,7 @@
     "start": "babel src -d build --copy-files --watch",
     "build": "babel src -d build --copy-files",
     "lint": "eslint src/**/**",
-    "prepublish": "yarn build"
+    "prepare": "yarn build"
   },
   "homepage": "https://github.com/BretCameron/sanity-plugin-order-documents",
   "bugs": {

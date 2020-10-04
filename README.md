@@ -1,5 +1,3 @@
-**WARNING: This plugin is still in development. Please do not use it in production until this warning is removed.**
-
 # sanity-plugin-order-documents
 
 Order your Sanity documents via drag-and-drop.
