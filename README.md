@@ -75,3 +75,11 @@ Open `sanity.json` in the Sanity Studio project and append "order-documents" to 
 ```
 
 We're already watching our plugin for changes, so all that's left is to run our Sanity Studio with `sanity start`.
+
+## Limitations
+
+Right now, this plugin can be used to order the 100 most recently edited documents of a particular type. If you'd like to help add support for larger collections, consider contributing!
+
+## Contributing
+
+I'd welcome any contributions, from fixing a typo to something more substantial. You can raise a PR in [the project's GitHub repository](https://github.com/BretCameron/sanity-plugin-order-documents).
