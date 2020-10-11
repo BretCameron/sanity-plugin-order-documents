@@ -7,7 +7,7 @@ export const setOrder = (_id, index) => {
     .commit();
 };
 
-export const setListOrder = (list, start = 6, end) => {
+export const setListOrder = (list, start, end) => {
   if (start || end) {
     start = start || 0;
     end = end || list.length - 1;
