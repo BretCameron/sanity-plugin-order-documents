@@ -11,13 +11,20 @@ import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
 import { getDocumentTypeNames, setOrder, setListOrder } from "../functions";
 import { Card } from "./Card";
+import { DEFAULT_FIELD } from "../data";
+import { getHiddenNumberFields } from "../functions/getHiddenNumberFields";
 
 class OrderDocuments extends React.Component {
   state = {
     documents: [],
-    type: ""
+    type: "",
+    field: DEFAULT_FIELD
   };
   observables = {};
+
+  componentDidMount() {
+    console.log(getHiddenNumberFields());
+  }
 
   handleReceiveList = async documents => {
     this.setState({ documents });
@@ -28,8 +35,8 @@ class OrderDocuments extends React.Component {
     this.setState({ type: value });
     this.observables = client.observable
       .fetch(
-        '*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (order asc, _updatedAt desc)',
-        { types: value }
+        '*[!(_id in path("drafts.**")) && _type == $types][0...100] | order ($field asc, _updatedAt desc)',
+        { types: value, field: this.state.field }
       )
       .subscribe(this.handleReceiveList);
   };
@@ -49,6 +56,35 @@ class OrderDocuments extends React.Component {
 
     await Promise.all([setOrder(card1._id, afterIndex), setOrder(card2._id, beforeIndex)]);
   };
+
+  renderDocumentsList() {
+    const { documents } = this.state;
+
+    if (!documents) {
+      return (
+        <div className={styles.list}>
+          <Spinner message="Loading..." center />
+        </div>
+      );
+    }
+
+    const uniqueTypes = (getDocumentTypeNames(this.state.field) || []).map(({ name, title }) => ({
+      value: name,
+      label: title
+    }));
+
+    return (
+      <>
+        <h2 className={styles.noTopMargin}>Order Documents</h2>
+        <p>Order your documents via drag-and-drop.</p>
+        <hr />
+        <p>
+          <strong>Step 1: Choose a Type</strong>
+        </p>
+        <Select options={uniqueTypes} isSearchable onChange={this.handleChange} />
+      </>
+    );
+  }
 
   renderDraggableSection() {
     const { documents, type } = this.state;
@@ -85,35 +121,6 @@ class OrderDocuments extends React.Component {
             </li>
           ))}
         </ul>
-      </>
-    );
-  }
-
-  renderDocumentsList() {
-    const { documents } = this.state;
-
-    if (!documents) {
-      return (
-        <div className={styles.list}>
-          <Spinner message="Loading..." center />
-        </div>
-      );
-    }
-
-    const uniqueTypes = (getDocumentTypeNames() || []).map(({ name, title }) => ({
-      value: name,
-      label: title
-    }));
-
-    return (
-      <>
-        <h2 className={styles.noTopMargin}>Order Documents</h2>
-        <p>Order your documents via drag-and-drop.</p>
-        <hr />
-        <p>
-          <strong>Step 1: Choose a Type</strong>
-        </p>
-        <Select options={uniqueTypes} isSearchable onChange={this.handleChange} />
       </>
     );
   }
