@@ -1,20 +1,15 @@
 import React from "react";
 import update from "immutability-helper";
-import Select from "react-select";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Spinner from "part:@sanity/components/loading/spinner";
-import Preview from "part:@sanity/base/preview";
 import client from "part:@sanity/base/client";
-import schema from "part:@sanity/base/schema";
 import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
-import { getDocumentTypeNames, setOrder, setListOrder } from "../functions";
-import { Card } from "./Card";
-import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
+import { setOrder, setListOrder } from "../functions";
+import { DEFAULT_FIELD_VALUE } from "../data";
 import { getHiddenNumberFields } from "../functions/getHiddenNumberFields";
-
-const TOGGLE_FIELD_SELECTOR = true;
+import DraggableSection from "./organisms/DraggableSection";
+import TypeSection from "./organisms/TypeSection";
 
 class OrderDocuments extends React.Component {
   constructor() {
@@ -30,14 +25,17 @@ class OrderDocuments extends React.Component {
     };
   }
 
-  handleFieldChange = ({ value }) => {
-    this.setState({ field: value, type: "" });
-    this.handleReceiveList([]);
-  };
-
   handleReceiveList = async documents => {
     this.setState({ documents });
-    await setListOrder(documents, this.state.field);
+
+    if (documents && documents.length > 0) {
+      await setListOrder(documents, this.state.field);
+    }
+  };
+
+  handleFieldChange = ({ value }) => {
+    this.setState({ field: value, type: { label: "", value: "" } });
+    this.handleReceiveList([]);
   };
 
   handleChange = ({ value, label }) => {
@@ -69,108 +67,18 @@ class OrderDocuments extends React.Component {
     ]);
   };
 
-  renderDocumentsList() {
-    const { documents } = this.state;
-
-    if (!documents) {
-      return (
-        <div className={styles.list}>
-          <Spinner message="Loading..." center />
-        </div>
-      );
-    }
-
-    const uniqueTypes = (getDocumentTypeNames(this.state.field) || []).map(({ name, title }) => ({
-      value: name,
-      label: title
-    }));
-
-    const uniqueFields = this.state.fields.map(({ name, title }) => ({
-      value: name,
-      label: name === DEFAULT_FIELD_VALUE ? DEFAULT_FIELD_LABEL : title
-    }));
-
-    return (
-      <>
-        <div className={styles.flexSpaceBetween}>
-          <div>
-            <h2 className={styles.noTopMargin}>Order Documents</h2>
-            <p>Order your documents via drag-and-drop.</p>
-          </div>
-          <div>
-            {TOGGLE_FIELD_SELECTOR && this.state.showFields ? (
-              <div className={styles.fieldButton} onClick={this.handleFieldNameClick}>
-                <Select
-                  options={uniqueFields}
-                  isSearchable
-                  onChange={this.handleFieldChange}
-                  defaultValue={{ value: DEFAULT_FIELD_VALUE, label: DEFAULT_FIELD_LABEL }}
-                />
-              </div>
-            ) : null}
-          </div>
-        </div>
-        <hr />
-        <p>
-          <strong>Step 1: Choose a Type</strong>
-        </p>
-        <Select
-          options={uniqueTypes}
-          isSearchable
-          onChange={this.handleChange}
-          value={this.state.type}
-        />
-      </>
-    );
-  }
-
-  renderDraggableSection() {
-    const { documents, type } = this.state;
-
-    if (!(type && type.value) && !documents.length) {
-      return null;
-    }
-
-    if (type && type.value && !documents.length) {
-      return (
-        <div className={styles.marginTop}>
-          <Spinner message="Loading..." center />
-        </div>
-      );
-    }
-
-    return (
-      <>
-        <hr className={styles.rule} />
-        <p>
-          <strong>Step 2: Drag and Drop to Re-order</strong>
-        </p>
-        <ul className={styles.list}>
-          {documents.map((document, index) => (
-            <li key={document._id} className={styles.listItem}>
-              <Card
-                key={document._id}
-                index={index}
-                id={document._id}
-                text={document.title}
-                moveCard={this.moveCard}
-                jsx={<Preview value={document} type={schema.get(document._type)} />}
-              />
-            </li>
-          ))}
-        </ul>
-      </>
-    );
-  }
-
   render() {
     return (
       <DndProvider backend={HTML5Backend}>
         <div className={styles.container}>
           <div className={styles.outerWrapper}>
             <div className={styles.innerWrapper}>
-              {this.renderDocumentsList()}
-              {this.renderDraggableSection()}
+              <TypeSection
+                {...this.state}
+                handleChange={this.handleChange}
+                handleFieldChange={this.handleFieldChange}
+              />
+              <DraggableSection documents={this.state.documents} type={this.state.type} />
             </div>
           </div>
         </div>
