@@ -11,43 +11,41 @@ import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
 import { getDocumentTypeNames, setOrder, setListOrder } from "../functions";
 import { Card } from "./Card";
-import { DEFAULT_FIELD } from "../data";
+import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
 import { getHiddenNumberFields } from "../functions/getHiddenNumberFields";
 
-const TOGGLE_FIELD_SELECTOR = false;
+const TOGGLE_FIELD_SELECTOR = true;
 
 class OrderDocuments extends React.Component {
   constructor() {
     super();
-
     const fields = getHiddenNumberFields();
-
+    this.observables = {};
     this.state = {
       documents: [],
-      type: "",
-      field: DEFAULT_FIELD,
+      type: { label: "", value: "" },
+      field: DEFAULT_FIELD_VALUE,
       fields,
       showFields: fields.length > 1 && fields.findIndex(field => field.name === "order") !== -1
     };
-    this.observables = {};
   }
 
   handleFieldChange = ({ value }) => {
-    this.setState({ field: value });
-    // TODO - unselect current type and remove list
+    this.setState({ field: value, type: "" });
+    this.handleReceiveList([]);
   };
 
   handleReceiveList = async documents => {
     this.setState({ documents });
-    await setListOrder(documents);
+    await setListOrder(documents, this.state.field);
   };
 
-  handleChange = ({ value }) => {
-    this.setState({ type: value });
+  handleChange = ({ value, label }) => {
+    this.setState({ type: { value, label } });
     this.observables = client.observable
       .fetch(
-        '*[!(_id in path("drafts.**")) && _type == $types][0...100] | order ($field asc, _updatedAt desc)',
-        { types: value, field: this.state.field }
+        `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field} asc, order asc, _updatedAt desc)`,
+        { types: value }
       )
       .subscribe(this.handleReceiveList);
   };
@@ -65,7 +63,10 @@ class OrderDocuments extends React.Component {
       })
     });
 
-    await Promise.all([setOrder(card1._id, afterIndex), setOrder(card2._id, beforeIndex)]);
+    await Promise.all([
+      setOrder(card1._id, afterIndex, this.state.field),
+      setOrder(card2._id, beforeIndex, this.state.field)
+    ]);
   };
 
   renderDocumentsList() {
@@ -86,7 +87,7 @@ class OrderDocuments extends React.Component {
 
     const uniqueFields = this.state.fields.map(({ name, title }) => ({
       value: name,
-      label: name === DEFAULT_FIELD ? title + " (default)" : title
+      label: name === DEFAULT_FIELD_VALUE ? DEFAULT_FIELD_LABEL : title
     }));
 
     return (
@@ -103,7 +104,7 @@ class OrderDocuments extends React.Component {
                   options={uniqueFields}
                   isSearchable
                   onChange={this.handleFieldChange}
-                  defaultValue={this.state.field}
+                  defaultValue={{ value: DEFAULT_FIELD_VALUE, label: DEFAULT_FIELD_LABEL }}
                 />
               </div>
             ) : null}
@@ -113,7 +114,12 @@ class OrderDocuments extends React.Component {
         <p>
           <strong>Step 1: Choose a Type</strong>
         </p>
-        <Select options={uniqueTypes} isSearchable onChange={this.handleChange} />
+        <Select
+          options={uniqueTypes}
+          isSearchable
+          onChange={this.handleChange}
+          value={this.state.type}
+        />
       </>
     );
   }
@@ -121,11 +127,11 @@ class OrderDocuments extends React.Component {
   renderDraggableSection() {
     const { documents, type } = this.state;
 
-    if (!type && !documents.length) {
+    if (!(type && type.value) && !documents.length) {
       return null;
     }
 
-    if (type && !documents.length) {
+    if (type && type.value && !documents.length) {
       return (
         <div className={styles.marginTop}>
           <Spinner message="Loading..." center />
