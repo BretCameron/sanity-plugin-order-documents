@@ -14,6 +14,8 @@ import { Card } from "./Card";
 import { DEFAULT_FIELD } from "../data";
 import { getHiddenNumberFields } from "../functions/getHiddenNumberFields";
 
+const ALLOW_FIELDNAME_BUTTON = false;
+
 class OrderDocuments extends React.Component {
   state = {
     documents: [],
@@ -22,9 +24,9 @@ class OrderDocuments extends React.Component {
   };
   observables = {};
 
-  componentDidMount() {
+  handleFieldNameClick = () => {
     console.log(getHiddenNumberFields());
-  }
+  };
 
   handleReceiveList = async documents => {
     this.setState({ documents });
@@ -75,8 +77,19 @@ class OrderDocuments extends React.Component {
 
     return (
       <>
-        <h2 className={styles.noTopMargin}>Order Documents</h2>
-        <p>Order your documents via drag-and-drop.</p>
+        <div className={styles.flexSpaceBetween}>
+          <div>
+            <h2 className={styles.noTopMargin}>Order Documents</h2>
+            <p>Order your documents via drag-and-drop.</p>
+          </div>
+          <div>
+            {ALLOW_FIELDNAME_BUTTON ? (
+              <div className={styles.fieldButton} onClick={this.handleFieldNameClick}>
+                <div className={styles.fieldName}>{this.state.field}</div>
+              </div>
+            ) : null}
+          </div>
+        </div>
         <hr />
         <p>
           <strong>Step 1: Choose a Type</strong>
