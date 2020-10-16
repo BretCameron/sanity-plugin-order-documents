@@ -14,18 +14,27 @@ import { Card } from "./Card";
 import { DEFAULT_FIELD } from "../data";
 import { getHiddenNumberFields } from "../functions/getHiddenNumberFields";
 
-const ALLOW_FIELDNAME_BUTTON = false;
+const TOGGLE_FIELD_SELECTOR = false;
 
 class OrderDocuments extends React.Component {
-  state = {
-    documents: [],
-    type: "",
-    field: DEFAULT_FIELD
-  };
-  observables = {};
+  constructor() {
+    super();
 
-  handleFieldNameClick = () => {
-    console.log(getHiddenNumberFields());
+    const fields = getHiddenNumberFields();
+
+    this.state = {
+      documents: [],
+      type: "",
+      field: DEFAULT_FIELD,
+      fields,
+      showFields: fields.length > 1 && fields.findIndex(field => field.name === "order") !== -1
+    };
+    this.observables = {};
+  }
+
+  handleFieldChange = ({ value }) => {
+    this.setState({ field: value });
+    // TODO - unselect current type and remove list
   };
 
   handleReceiveList = async documents => {
@@ -75,6 +84,11 @@ class OrderDocuments extends React.Component {
       label: title
     }));
 
+    const uniqueFields = this.state.fields.map(({ name, title }) => ({
+      value: name,
+      label: name === DEFAULT_FIELD ? title + " (default)" : title
+    }));
+
     return (
       <>
         <div className={styles.flexSpaceBetween}>
@@ -83,9 +97,14 @@ class OrderDocuments extends React.Component {
             <p>Order your documents via drag-and-drop.</p>
           </div>
           <div>
-            {ALLOW_FIELDNAME_BUTTON ? (
+            {TOGGLE_FIELD_SELECTOR && this.state.showFields ? (
               <div className={styles.fieldButton} onClick={this.handleFieldNameClick}>
-                <div className={styles.fieldName}>{this.state.field}</div>
+                <Select
+                  options={uniqueFields}
+                  isSearchable
+                  onChange={this.handleFieldChange}
+                  defaultValue={this.state.field}
+                />
               </div>
             ) : null}
           </div>

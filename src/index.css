@@ -68,20 +68,12 @@ hr {
 }
 
 .fieldButton {
-  padding: 0.5rem 2rem;
   margin-bottom: 1rem;
-  border: 1px solid lightblue;
   background: #fcfcfc;
-  border-radius: 0.5rem;
-  min-width: 7.5rem;
-  text-align: center;
+  min-width: 12.5rem;
+  text-align: left;
   cursor: pointer;
   transition: 250ms ease-out;
-}
-
-.fieldName {
-  font-family: monospace;
-  font-size: 1.15rem;
 }
 
 @media (max-width: 42rem) {

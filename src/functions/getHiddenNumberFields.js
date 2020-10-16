@@ -12,8 +12,8 @@ export const getHiddenNumberFields = () => {
         const isHidden = type && type.hidden;
         const isNumber = type && type.name === "number";
 
-        if (isHidden && isNumber && !array.includes(name)) {
-          array.push(name);
+        if (isHidden && isNumber && array.findIndex(field => field.name === name) === -1) {
+          array.push({ name, title: type.title });
         }
       }
     }
