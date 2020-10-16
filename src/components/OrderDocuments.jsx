@@ -78,7 +78,11 @@ class OrderDocuments extends React.Component {
                 handleChange={this.handleChange}
                 handleFieldChange={this.handleFieldChange}
               />
-              <DraggableSection documents={this.state.documents} type={this.state.type} />
+              <DraggableSection
+                documents={this.state.documents}
+                type={this.state.type}
+                moveCard={this.moveCard}
+              />
             </div>
           </div>
         </div>

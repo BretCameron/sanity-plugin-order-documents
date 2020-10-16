@@ -47,7 +47,7 @@ class TypeSection extends React.Component {
                 <Select
                   options={uniqueFields}
                   isSearchable
-                  onChange={this.handleFieldChange}
+                  onChange={handleFieldChange}
                   defaultValue={{ value: DEFAULT_FIELD_VALUE, label: DEFAULT_FIELD_LABEL }}
                 />
               </div>

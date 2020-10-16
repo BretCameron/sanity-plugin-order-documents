@@ -7,7 +7,7 @@ import { Card } from "../molecules/Card";
 
 class DraggableSection extends React.Component {
   render() {
-    const { documents, type } = this.props;
+    const { documents, type, moveCard } = this.props;
 
     if (!(type && type.value) && !documents.length) {
       return null;
@@ -35,7 +35,7 @@ class DraggableSection extends React.Component {
                 index={index}
                 id={document._id}
                 text={document.title}
-                moveCard={this.moveCard}
+                moveCard={moveCard}
                 jsx={<Preview value={document} type={schema.get(document._type)} />}
               />
             </li>
