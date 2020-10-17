@@ -54,7 +54,10 @@ Our custom order has been saved, and it will be reflected in the result!
 
 Want to save multiple orders for the same document type?
 
-To allow custom fields, a type must include the default order field (as above) and one or more other hidden number fields.
+To allow custom fields, a type must include:
+
+- the `order` field,
+- one or more additional hidden number fields.
 
 For example, let's add two new fields to our `audiencePick` and `criticsPick` to `./schemas/movie.js`.
 
@@ -82,7 +85,7 @@ fields: [
 ],
 ```
 
-Now, when we select the "Movie" type in our plugin, we'll be able to select our custom fields in the top right corner.
+Now, when we select the "movie" type in our plugin, we'll be able to select our custom fields in the top right corner.
 
 ## Development
 
