@@ -66,7 +66,7 @@ fields: [
   // other fields,
   {
     name: "order",
-    title: "Order",
+    title: "Order (default)",
     type: "number",
     hidden: true,
   },
