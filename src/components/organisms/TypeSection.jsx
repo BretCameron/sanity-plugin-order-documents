@@ -6,15 +6,7 @@ import styles from "../../index.css";
 
 class TypeSection extends React.Component {
   render() {
-    const {
-      documents,
-      type,
-      field,
-      fields,
-      showFields,
-      handleChange,
-      handleFieldChange
-    } = this.props;
+    const { documents, type, field, fields, handleChange, handleFieldChange } = this.props;
 
     if (!documents) {
       return (
@@ -24,15 +16,21 @@ class TypeSection extends React.Component {
       );
     }
 
-    const uniqueTypes = (getDocumentTypeNames(field) || []).map(({ name, title }) => ({
+    const types = getDocumentTypeNames(field);
+    const uniqueTypes = types.map(({ name, title }) => ({
       value: name,
       label: title
     }));
 
-    const uniqueFields = fields.map(({ name, title }) => ({
+    const chosenType = types.find(({ name }) => name === type.value);
+
+    const uniqueFields = (chosenType ? chosenType.fields : []).map(({ name, title }) => ({
       value: name,
-      label: name === DEFAULT_FIELD_VALUE ? DEFAULT_FIELD_LABEL : title
+      label: title
     }));
+
+    const showFields =
+      uniqueFields.length > 1 && uniqueFields.findIndex(field => field.value === "order") !== -1;
 
     return (
       <>

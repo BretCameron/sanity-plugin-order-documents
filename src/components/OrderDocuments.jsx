@@ -20,8 +20,7 @@ class OrderDocuments extends React.Component {
       documents: [],
       type: { label: "", value: "" },
       field: DEFAULT_FIELD_VALUE,
-      fields,
-      showFields: fields.length > 1 && fields.findIndex(field => field.name === "order") !== -1
+      fields
     };
   }
 
@@ -34,8 +33,19 @@ class OrderDocuments extends React.Component {
   };
 
   handleFieldChange = ({ value }) => {
-    this.setState({ field: value, type: { label: "", value: "" } });
-    this.handleReceiveList([]);
+    this.setState({ field: value, documents: [] }, async () => {
+      this.observables = {};
+      this.observables = client.observable
+        .fetch(
+          `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${value} asc, order asc, _updatedAt desc)`,
+          { types: this.state.type.value }
+        )
+        .subscribe(this.handleReceiveList);
+
+      if (documents && documents.length > 0) {
+        await setListOrder(documents, value);
+      }
+    });
   };
 
   handleChange = ({ value, label }) => {
