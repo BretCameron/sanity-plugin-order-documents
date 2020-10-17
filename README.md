@@ -50,6 +50,40 @@ For example, to query movies using Sanity's query language GROQ, we can write:
 
 Our custom order has been saved, and it will be reflected in the result!
 
+## Custom Fields
+
+Want to save multiple orders for the same document type?
+
+To allow custom fields, a type must include the default order field (as above) and one or more other hidden number fields.
+
+For example, let's add two new fields to our `audiencePick` and `criticsPick` to `./schemas/movie.js`.
+
+```js
+fields: [
+  // other fields,
+  {
+    name: "order",
+    title: "Order",
+    type: "number",
+    hidden: true,
+  },
+    {
+    name: "audiencePick",
+    title: "Audience Pick",
+    type: "number",
+    hidden: true,
+  },
+    {
+    name: "criticsPick",
+    title: "Critics' Pick",
+    type: "number",
+    hidden: true,
+  },
+],
+```
+
+Now, when we select the "Movie" type in our plugin, we'll be able to select our custom fields in the top right corner.
+
 ## Development
 
 To develop this plugin, clone it into a local directory. Then, navigate to the root of the cloned repository and run:
