@@ -39,8 +39,8 @@ class OrderDocuments extends React.Component {
         )
         .subscribe(this.handleReceiveList);
 
-      if (documents && documents.length > 0) {
-        await setListOrder(documents, value);
+      if (this.state.documents.length > 0) {
+        await setListOrder(this.state.documents, value);
       }
     });
   };
