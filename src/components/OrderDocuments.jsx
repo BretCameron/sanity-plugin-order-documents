@@ -7,20 +7,17 @@ import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
 import { setOrder, setListOrder } from "../functions";
 import { DEFAULT_FIELD_VALUE } from "../data";
-import { getHiddenNumberFields } from "../functions/getHiddenNumberFields";
 import DraggableSection from "./organisms/DraggableSection";
 import TypeSection from "./organisms/TypeSection";
 
 class OrderDocuments extends React.Component {
   constructor() {
     super();
-    const fields = getHiddenNumberFields();
     this.observables = {};
     this.state = {
       documents: [],
       type: { label: "", value: "" },
-      field: DEFAULT_FIELD_VALUE,
-      fields
+      field: DEFAULT_FIELD_VALUE
     };
   }
 
