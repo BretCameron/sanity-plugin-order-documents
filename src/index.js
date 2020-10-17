@@ -1,5 +1,6 @@
 import React from "react";
 import component from "./components/OrderDocuments";
+import "react-tippy/dist/tippy.css";
 
 function icon() {
   return (

@@ -1,7 +1,7 @@
 import schema from "part:@sanity/base/schema";
-import { DEFAULT_FIELD } from "../data";
+import { DEFAULT_FIELD_VALUE } from "../data";
 
-export const getDocumentTypeNames = (field = DEFAULT_FIELD) => {
+export const getDocumentTypeNames = (field = DEFAULT_FIELD_VALUE) => {
   return schema.getTypeNames().reduce((array, typeName) => {
     const { name, title, type, fields } = schema.get(typeName);
 
@@ -9,8 +9,19 @@ export const getDocumentTypeNames = (field = DEFAULT_FIELD) => {
     const isSanity = name && name.startsWith("sanity.");
     const hasOrderField = fields && fields.filter(({ name }) => name === field).length > 0;
 
+    let hiddenNumberFields = [];
+
     if (isDocument && !isSanity && hasOrderField) {
-      array.push({ name, title: title || name });
+      for (const { name, type } of fields) {
+        const isHidden = type && type.hidden;
+        const isNumber = type && type.name === "number";
+
+        if (isHidden && isNumber && array.findIndex(field => field.name === name) === -1) {
+          hiddenNumberFields.push({ name, title: type.title });
+        }
+      }
+
+      array.push({ name, title: title || name, fields: hiddenNumberFields });
     }
 
     return array;
