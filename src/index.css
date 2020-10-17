@@ -67,22 +67,44 @@ hr {
   justify-content: space-between;
 }
 
-.fieldButton {
+.flexEnd {
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.selectWrapper {
   margin-bottom: 1rem;
-  background: #fcfcfc;
-  min-width: 12.5rem;
+  width: 15rem;
   text-align: left;
-  cursor: pointer;
   transition: 250ms ease-out;
+  padding: 1rem 0.75rem 1rem 1rem;
+  background: #f3f3f3;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.fieldsSelect {
+  width: 100%;
+}
+
+.tooltip {
+  margin-top: -0.25rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
 }
 
 @media (max-width: 42rem) {
   .flexSpaceBetween {
-    display: block;
+    flex-direction: column-reverse;
   }
 
-  .fieldButton {
-    min-width: 0;
+  .selectWrapper {
+    width: 100%;
+    max-width: 12.5rem;
   }
 }
 

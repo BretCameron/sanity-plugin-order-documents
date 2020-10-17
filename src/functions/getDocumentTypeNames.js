@@ -1,7 +1,7 @@
 import schema from "part:@sanity/base/schema";
-import { DEFAULT_FIELD } from "../data";
+import { DEFAULT_FIELD_VALUE } from "../data";
 
-export const getDocumentTypeNames = (field = DEFAULT_FIELD) => {
+export const getDocumentTypeNames = (field = DEFAULT_FIELD_VALUE) => {
   return schema.getTypeNames().reduce((array, typeName) => {
     const { name, title, type, fields } = schema.get(typeName);
 
