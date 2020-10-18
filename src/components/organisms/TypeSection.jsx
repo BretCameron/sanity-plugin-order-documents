@@ -55,7 +55,7 @@ class TypeSection extends React.Component {
                   <Tooltip
                     html={
                       <p style={{ margin: "0.75rem", maxWidth: "16rem" }}>
-                        Use a custom field to order your attributes. Fields must be hidden and have
+                        Use a custom field to order your documents. Fields must be hidden and have
                         type "number" to be listed here.
                       </p>
                     }
