@@ -8,7 +8,7 @@ import QuestionIcon from "../atoms/QuestionIcon";
 
 class TypeSection extends React.Component {
   render() {
-    const { documents, type, handleChange, handleFieldChange } = this.props;
+    const { documents, type, handleTypeChange, handleFieldChange } = this.props;
 
     if (!documents) {
       return (
@@ -75,7 +75,7 @@ class TypeSection extends React.Component {
         <p>
           <strong>Step 1: Choose a Type</strong>
         </p>
-        <Select options={uniqueTypes} isSearchable onChange={handleChange} value={type} />
+        <Select options={uniqueTypes} isSearchable onChange={handleTypeChange} value={type} />
       </>
     );
   }
