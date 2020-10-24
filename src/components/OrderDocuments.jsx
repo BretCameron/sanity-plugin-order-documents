@@ -67,13 +67,9 @@ class OrderDocuments extends React.Component {
     if (shouldShowWarning) {
       shouldProceed = window.confirm(
         `It looks like you are already storing data for:
- • Type: ${type.label}${
-          field.value === DEFAULT_FIELD_VALUE
-            ? ""
-            : `
- • Field: ${field.label}`
-        }
-          
+ • Type: ${type.label}
+ • Field: ${field.label}
+
 Override existing data? This is a one-time operation and cannot be reversed.`
       );
     }
