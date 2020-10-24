@@ -78,7 +78,7 @@ class TypeSection extends React.Component {
             <strong>Step 1: Choose a Type</strong>
           </p>
           <button className={styles.refreshButton} onClick={refreshTypes}>
-            <RefreshIcon />
+            <RefreshIcon title="Refresh Types" />
           </button>
         </div>
         <Select options={selectorTypes} isSearchable onChange={handleTypeChange} value={type} />

@@ -30,7 +30,7 @@ class DraggableSection extends React.Component {
             <strong>Step 2: Drag and Drop to Re-order</strong>
           </p>
           <button className={styles.refreshButton} onClick={refreshDocuments}>
-            <RefreshIcon />
+            <RefreshIcon title="Refresh Documents" />
           </button>
         </div>
         <ul className={styles.list}>
