@@ -5,7 +5,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import client from "part:@sanity/base/client";
 import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
-import { setOrder, setListOrder, getDocumentTypeNames } from "../functions";
+import { setOrder, setListOrder, getDocumentTypeNames, willUserOverrideData } from "../functions";
 import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
 import DraggableSection from "./organisms/DraggableSection";
 import TypeSection from "./organisms/TypeSection";
@@ -59,18 +59,44 @@ class OrderDocuments extends React.Component {
     }
   };
 
+  isSafeToProceed = (documents, field, type) => {
+    const shouldShowWarning = willUserOverrideData(documents, field.value);
+
+    let shouldProceed = true;
+
+    if (shouldShowWarning) {
+      shouldProceed = window.confirm(
+        `It looks like you are already storing data for:
+ • Type: ${type.label}${
+          field.value === DEFAULT_FIELD_VALUE
+            ? ""
+            : `
+ • Field: ${field.label}`
+        }
+          
+Override existing data? This is a one-time operation and cannot be reversed.`
+      );
+    }
+
+    return shouldProceed;
+  };
+
   handleTypeChange = async ({ value, label }) => {
     const documents = await client.fetch(
       `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
       { types: value }
     );
 
-    this.setState({ type: { value, label }, documents }, () => {
-      this.getFields();
-    });
+    const shouldProceed = this.isSafeToProceed(documents, this.state.field, { value, label });
 
-    if (documents.length > 0) {
-      await setListOrder(this.state.documents, this.state.field.value);
+    if (shouldProceed) {
+      this.setState({ type: { value, label }, documents }, () => {
+        this.getFields();
+      });
+
+      if (documents.length > 0) {
+        await setListOrder(this.state.documents, this.state.field.value);
+      }
     }
   };
 
@@ -80,10 +106,14 @@ class OrderDocuments extends React.Component {
       { types: this.state.type.value }
     );
 
-    this.setState({ field: { value, label }, documents });
+    const shouldProceed = this.isSafeToProceed(documents, { value, label }, this.state.type);
 
-    if (documents.length > 0) {
-      await setListOrder(this.state.documents, value);
+    if (shouldProceed) {
+      this.setState({ field: { value, label }, documents });
+
+      if (documents.length > 0) {
+        await setListOrder(this.state.documents, value);
+      }
     }
   };
 
