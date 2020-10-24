@@ -20,10 +20,11 @@
 
 .list {
   list-style-type: none;
-  padding: 0;
   min-width: 220px;
   max-width: 100%;
   overflow-y: auto;
+  margin-top: 0;
+  padding: 0;
 }
 
 .listItem:first-child {
@@ -121,4 +122,20 @@ hr {
 
 .fieldButton:hover {
   background: #eee;
+}
+
+.subheading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.refreshButton {
+  display: flex;
+  place-items: center;
+  height: 100%;
+  padding: 0.45rem 0.45rem 0.25rem 0.45rem;
+  cursor: pointer;
+  background: none;
+  border: none;
 }

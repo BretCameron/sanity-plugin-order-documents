@@ -4,10 +4,11 @@ import Preview from "part:@sanity/base/preview";
 import schema from "part:@sanity/base/schema";
 import styles from "../../index.css";
 import { Card } from "../molecules/Card";
+import RefreshIcon from "../atoms/RefreshIcon";
 
 class DraggableSection extends React.Component {
   render() {
-    const { documents, type, moveCard } = this.props;
+    const { documents, type, moveCard, refreshDocuments } = this.props;
 
     if (!(type && type.value) && !documents.length) {
       return null;
@@ -24,9 +25,14 @@ class DraggableSection extends React.Component {
     return (
       <>
         <hr className={styles.rule} />
-        <p>
-          <strong>Step 2: Drag and Drop to Re-order</strong>
-        </p>
+        <div className={styles.subheading}>
+          <p>
+            <strong>Step 2: Drag and Drop to Re-order</strong>
+          </p>
+          <button className={styles.refreshButton} onClick={refreshDocuments}>
+            <RefreshIcon />
+          </button>
+        </div>
         <ul className={styles.list}>
           {documents.map((document, index) => (
             <li key={document._id} className={styles.listItem}>

@@ -5,7 +5,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import client from "part:@sanity/base/client";
 import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
-import { setOrder, setListOrder } from "../functions";
+import { setOrder, setListOrder, getDocumentTypeNames } from "../functions";
 import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
 import DraggableSection from "./organisms/DraggableSection";
 import TypeSection from "./organisms/TypeSection";
@@ -13,8 +13,65 @@ import TypeSection from "./organisms/TypeSection";
 class OrderDocuments extends React.Component {
   state = {
     documents: [],
+    types: [],
     type: { label: "", value: "" },
-    field: { label: DEFAULT_FIELD_LABEL, value: DEFAULT_FIELD_VALUE }
+    field: { label: DEFAULT_FIELD_LABEL, value: DEFAULT_FIELD_VALUE },
+    fields: []
+  };
+
+  componentDidMount() {
+    this.getTypes();
+  }
+
+  getTypes = () => {
+    const types = getDocumentTypeNames();
+    this.setState({ types });
+  };
+
+  getFields = () => {
+    const { type, types } = this.state;
+
+    const selectedType = types.find(({ name }) => name === type.value);
+
+    const fields = (selectedType ? selectedType.fields : []).map(({ name, title }) => ({
+      value: name,
+      label: title
+    }));
+
+    this.setState({ fields });
+  };
+
+  refreshTypes = () => {
+    this.getTypes();
+    this.getFields();
+  };
+
+  refreshDocuments = async () => {
+    const documents = await client.fetch(
+      `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      { types: this.state.type.value }
+    );
+
+    this.setState({ documents });
+
+    if (documents.length > 0) {
+      await setListOrder(this.state.documents, this.state.field.value);
+    }
+  };
+
+  handleTypeChange = async ({ value, label }) => {
+    const documents = await client.fetch(
+      `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      { types: value }
+    );
+
+    this.setState({ type: { value, label }, documents }, () => {
+      this.getFields();
+    });
+
+    if (documents.length > 0) {
+      await setListOrder(this.state.documents, this.state.field.value);
+    }
   };
 
   handleFieldChange = async ({ value, label }) => {
@@ -27,19 +84,6 @@ class OrderDocuments extends React.Component {
 
     if (documents.length > 0) {
       await setListOrder(this.state.documents, value);
-    }
-  };
-
-  handleTypeChange = async ({ value, label }) => {
-    const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
-      { types: value }
-    );
-
-    this.setState({ type: { value, label }, documents });
-
-    if (documents.length > 0) {
-      await setListOrder(this.state.documents, this.state.field.value);
     }
   };
 
@@ -72,11 +116,13 @@ class OrderDocuments extends React.Component {
                 {...this.state}
                 handleTypeChange={this.handleTypeChange}
                 handleFieldChange={this.handleFieldChange}
+                refreshTypes={this.refreshTypes}
               />
               <DraggableSection
                 documents={this.state.documents}
                 type={this.state.type}
                 moveCard={this.moveCard}
+                refreshDocuments={this.refreshDocuments}
               />
             </div>
           </div>
