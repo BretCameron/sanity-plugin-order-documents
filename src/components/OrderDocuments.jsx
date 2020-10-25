@@ -10,6 +10,8 @@ import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
 import DraggableSection from "./organisms/DraggableSection";
 import TypeSection from "./organisms/TypeSection";
 
+const PAGE_SIZE = 100;
+
 class OrderDocuments extends React.Component {
   state = {
     count: 0,
@@ -23,6 +25,18 @@ class OrderDocuments extends React.Component {
   componentDidMount() {
     this.getTypes();
   }
+
+  loadMore = async () => {
+    const length = this.state.documents.length;
+
+    const documents = await client.fetch(
+      `*[!(_id in path("drafts.**")) && _type == $types][${length}...${length +
+        PAGE_SIZE}] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      { types: this.state.type.value }
+    );
+
+    this.setState({ documents: [...this.state.documents, ...documents] });
+  };
 
   getTypes = () => {
     const types = getDocumentTypeNames();
@@ -48,12 +62,12 @@ class OrderDocuments extends React.Component {
   };
 
   refreshDocuments = async () => {
-    const count = await client.fetch(`count(*[_type == $types])`, {
+    const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
       types: this.state.type.value
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      `*[!(_id in path("drafts.**")) && _type == $types][0...${PAGE_SIZE}] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
       { types: this.state.type.value }
     );
 
@@ -83,12 +97,12 @@ Override existing data? This is a one-time operation and cannot be reversed.`
   };
 
   handleTypeChange = async ({ value, label }) => {
-    const count = await client.fetch(`count(*[_type == $types])`, {
+    const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
       types: value
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      `*[!(_id in path("drafts.**")) && _type == $types][0...${PAGE_SIZE}] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
       { types: value }
     );
 
@@ -106,12 +120,12 @@ Override existing data? This is a one-time operation and cannot be reversed.`
   };
 
   handleFieldChange = async ({ value, label }) => {
-    const count = await client.fetch(`count(*[_type == $types])`, {
+    const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
       types: this.state.type.value
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${value} asc, order asc, _updatedAt desc)`,
+      `*[!(_id in path("drafts.**")) && _type == $types][0...${PAGE_SIZE}] | order (${value} asc, order asc, _updatedAt desc)`,
       { types: this.state.type.value }
     );
 
@@ -163,6 +177,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
                 type={this.state.type}
                 moveCard={this.moveCard}
                 refreshDocuments={this.refreshDocuments}
+                loadMore={this.loadMore}
               />
             </div>
           </div>

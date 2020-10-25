@@ -8,7 +8,7 @@ import RefreshIcon from "../atoms/RefreshIcon";
 
 class DraggableSection extends React.Component {
   render() {
-    const { documents, count, type, moveCard, refreshDocuments } = this.props;
+    const { documents, count, type, moveCard, refreshDocuments, loadMore } = this.props;
 
     if (!(type && type.value) && !documents.length) {
       return null;
@@ -49,11 +49,11 @@ class DraggableSection extends React.Component {
             </li>
           ))}
         </ul>
-        {/* {hasReachedEnd ? null : (
+        {hasReachedEnd ? null : (
           <div className={styles.buttonWrapper}>
-            <button>Load More</button>
+            <button onClick={loadMore}>Load More</button>
           </div>
-        )} */}
+        )}
       </>
     );
   }
