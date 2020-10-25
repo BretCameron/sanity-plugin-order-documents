@@ -12,6 +12,22 @@
   }
 }
 
+button {
+  color: #7b8ca8;
+  background-color: transparent;
+  padding: calc(0.75rem - 1px) calc(2.75rem - 1px);
+  outline: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  border: 2px solid rgba(123, 140, 168, 0.35);
+  cursor: pointer;
+}
+
+button:hover {
+  background: #7b8ca8;
+  color: #ffffff;
+}
+
 .container {
   display: flex;
   width: 100%;
@@ -138,4 +154,9 @@ hr {
   cursor: pointer;
   background: none;
   border: none;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
 }

@@ -12,6 +12,7 @@ import TypeSection from "./organisms/TypeSection";
 
 class OrderDocuments extends React.Component {
   state = {
+    count: 0,
     documents: [],
     types: [],
     type: { label: "", value: "" },
@@ -47,12 +48,16 @@ class OrderDocuments extends React.Component {
   };
 
   refreshDocuments = async () => {
+    const count = await client.fetch(`count(*[_type == $types])`, {
+      types: this.state.type.value
+    });
+
     const documents = await client.fetch(
       `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
       { types: this.state.type.value }
     );
 
-    this.setState({ documents });
+    this.setState({ documents, count });
 
     if (documents.length > 0) {
       await setListOrder(this.state.documents, this.state.field.value);
@@ -78,6 +83,10 @@ Override existing data? This is a one-time operation and cannot be reversed.`
   };
 
   handleTypeChange = async ({ value, label }) => {
+    const count = await client.fetch(`count(*[_type == $types])`, {
+      types: value
+    });
+
     const documents = await client.fetch(
       `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
       { types: value }
@@ -86,7 +95,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
     const shouldProceed = this.isSafeToProceed(documents, this.state.field, { value, label });
 
     if (shouldProceed) {
-      this.setState({ type: { value, label }, documents }, () => {
+      this.setState({ type: { value, label }, documents, count }, () => {
         this.getFields();
       });
 
@@ -97,6 +106,10 @@ Override existing data? This is a one-time operation and cannot be reversed.`
   };
 
   handleFieldChange = async ({ value, label }) => {
+    const count = await client.fetch(`count(*[_type == $types])`, {
+      types: this.state.type.value
+    });
+
     const documents = await client.fetch(
       `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${value} asc, order asc, _updatedAt desc)`,
       { types: this.state.type.value }
@@ -105,7 +118,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
     const shouldProceed = this.isSafeToProceed(documents, { value, label }, this.state.type);
 
     if (shouldProceed) {
-      this.setState({ field: { value, label }, documents });
+      this.setState({ field: { value, label }, documents, count });
 
       if (documents.length > 0) {
         await setListOrder(this.state.documents, value);
@@ -146,6 +159,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
               />
               <DraggableSection
                 documents={this.state.documents}
+                count={this.state.count}
                 type={this.state.type}
                 moveCard={this.moveCard}
                 refreshDocuments={this.refreshDocuments}
