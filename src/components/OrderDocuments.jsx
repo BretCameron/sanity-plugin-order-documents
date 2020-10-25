@@ -29,13 +29,17 @@ class OrderDocuments extends React.Component {
   loadMore = async () => {
     const length = this.state.documents.length;
 
-    const documents = await client.fetch(
+    const newDocuments = await client.fetch(
       `*[!(_id in path("drafts.**")) && _type == $types][${length}...${length +
         PAGE_SIZE}] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
       { types: this.state.type.value }
     );
 
-    this.setState({ documents: [...this.state.documents, ...documents] });
+    const documents = [...this.state.documents, ...newDocuments];
+
+    this.setState({ documents });
+
+    // TODO call setListOrder on new docs
   };
 
   getTypes = () => {
