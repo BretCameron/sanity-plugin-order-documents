@@ -5,10 +5,19 @@ import { getDocumentTypeNames } from "../../functions";
 import styles from "../../index.css";
 import { Tooltip } from "react-tippy";
 import QuestionIcon from "../atoms/QuestionIcon";
+import RefreshIcon from "../atoms/RefreshIcon";
 
 class TypeSection extends React.Component {
   render() {
-    const { documents, type, handleChange, handleFieldChange } = this.props;
+    const {
+      documents,
+      type,
+      types,
+      fields,
+      handleTypeChange,
+      handleFieldChange,
+      refreshTypes
+    } = this.props;
 
     if (!documents) {
       return (
@@ -18,21 +27,13 @@ class TypeSection extends React.Component {
       );
     }
 
-    const types = getDocumentTypeNames();
-    const uniqueTypes = types.map(({ name, title }) => ({
-      value: name,
-      label: title
-    }));
-
-    const chosenType = types.find(({ name }) => name === type.value);
-
-    const uniqueFields = (chosenType ? chosenType.fields : []).map(({ name, title }) => ({
+    const selectorTypes = types.map(({ name, title }) => ({
       value: name,
       label: title
     }));
 
     const showFields =
-      uniqueFields.length > 1 && uniqueFields.findIndex(field => field.value === "order") !== -1;
+      fields.length > 1 && fields.findIndex(field => field.value === "order") !== -1;
 
     return (
       <>
@@ -46,7 +47,7 @@ class TypeSection extends React.Component {
               <div className={styles.selectWrapper}>
                 <Select
                   className={styles.fieldsSelect}
-                  options={uniqueFields}
+                  options={fields}
                   isSearchable
                   onChange={handleFieldChange}
                   defaultValue={{ value: DEFAULT_FIELD_VALUE, label: DEFAULT_FIELD_LABEL }}
@@ -55,7 +56,7 @@ class TypeSection extends React.Component {
                   <Tooltip
                     html={
                       <p style={{ margin: "0.75rem", maxWidth: "16rem" }}>
-                        Use a custom field to order your attributes. Fields must be hidden and have
+                        Use a custom field to order your documents. Fields must be hidden and have
                         type "number" to be listed here.
                       </p>
                     }
@@ -72,10 +73,15 @@ class TypeSection extends React.Component {
           </div>
         </div>
         <hr />
-        <p>
-          <strong>Step 1: Choose a Type</strong>
-        </p>
-        <Select options={uniqueTypes} isSearchable onChange={handleChange} value={type} />
+        <div className={styles.subheading}>
+          <p>
+            <strong>Step 1: Choose a Type</strong>
+          </p>
+          <button className={styles.refreshButton} onClick={refreshTypes}>
+            <RefreshIcon title="Refresh Types" />
+          </button>
+        </div>
+        <Select options={selectorTypes} isSearchable onChange={handleTypeChange} value={type} />
       </>
     );
   }

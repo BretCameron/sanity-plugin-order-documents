@@ -5,54 +5,145 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import client from "part:@sanity/base/client";
 import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
-import { setOrder, setListOrder } from "../functions";
-import { DEFAULT_FIELD_VALUE } from "../data";
+import { setOrder, setListOrder, getDocumentTypeNames, willUserOverrideData } from "../functions";
+import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
 import DraggableSection from "./organisms/DraggableSection";
 import TypeSection from "./organisms/TypeSection";
 
+const PAGE_SIZE = 25;
+// note: going above 25 can lead to Promises not resolving
+
 class OrderDocuments extends React.Component {
-  constructor() {
-    super();
-    this.observables = {};
-    this.state = {
-      documents: [],
-      type: { label: "", value: "" },
-      field: DEFAULT_FIELD_VALUE
-    };
+  state = {
+    count: 0,
+    documents: [],
+    types: [],
+    type: { label: "", value: "" },
+    field: { label: DEFAULT_FIELD_LABEL, value: DEFAULT_FIELD_VALUE },
+    fields: []
+  };
+
+  componentDidMount() {
+    this.getTypes();
   }
 
-  handleReceiveList = async documents => {
+  loadMore = async () => {
+    const length = this.state.documents.length;
+
+    const newDocuments = await client.fetch(
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${
+        this.state.field.value
+      } asc, order asc, _updatedAt desc)[${length}...${length + PAGE_SIZE}]`,
+      { types: this.state.type.value }
+    );
+
+    const documents = [...this.state.documents, ...newDocuments];
+
     this.setState({ documents });
 
-    if (documents && documents.length > 0) {
-      await setListOrder(documents, this.state.field);
+    await setListOrder(newDocuments, this.state.field.value, length);
+  };
+
+  getTypes = () => {
+    const types = getDocumentTypeNames();
+    this.setState({ types });
+  };
+
+  getFields = () => {
+    const { type, types } = this.state;
+
+    const selectedType = types.find(({ name }) => name === type.value);
+
+    const fields = (selectedType ? selectedType.fields : []).map(({ name, title }) => ({
+      value: name,
+      label: title
+    }));
+
+    this.setState({ fields });
+  };
+
+  refreshTypes = () => {
+    this.getTypes();
+    this.getFields();
+  };
+
+  refreshDocuments = async () => {
+    const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
+      types: this.state.type.value
+    });
+
+    const documents = await client.fetch(
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
+      { types: this.state.type.value }
+    );
+
+    this.setState({ documents, count });
+
+    if (documents.length > 0) {
+      await setListOrder(documents, this.state.field.value);
     }
   };
 
-  handleFieldChange = ({ value }) => {
-    this.setState({ field: value, documents: [] }, async () => {
-      this.observables = {};
-      this.observables = client.observable
-        .fetch(
-          `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${value} asc, order asc, _updatedAt desc)`,
-          { types: this.state.type.value }
-        )
-        .subscribe(this.handleReceiveList);
+  isSafeToProceed = (documents, field, type) => {
+    const shouldShowWarning = willUserOverrideData(documents, field.value);
 
-      if (this.state.documents.length > 0) {
-        await setListOrder(this.state.documents, value);
-      }
-    });
+    let shouldProceed = true;
+
+    if (shouldShowWarning) {
+      shouldProceed = window.confirm(
+        `It looks like you are already storing data for:
+ • Type: ${type.label}
+ • Field: ${field.label}
+
+Override existing data? This is a one-time operation and cannot be reversed.`
+      );
+    }
+
+    return shouldProceed;
   };
 
-  handleChange = ({ value, label }) => {
-    this.setState({ type: { value, label } });
-    this.observables = client.observable
-      .fetch(
-        `*[!(_id in path("drafts.**")) && _type == $types][0...100] | order (${this.state.field} asc, order asc, _updatedAt desc)`,
-        { types: value }
-      )
-      .subscribe(this.handleReceiveList);
+  handleTypeChange = async ({ value, label }) => {
+    const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
+      types: value
+    });
+
+    const documents = await client.fetch(
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
+      { types: value }
+    );
+
+    const shouldProceed = this.isSafeToProceed(documents, this.state.field, { value, label });
+
+    if (shouldProceed) {
+      this.setState({ type: { value, label }, documents, count }, () => {
+        this.getFields();
+      });
+
+      if (documents.length > 0) {
+        await setListOrder(documents, this.state.field.value);
+      }
+    }
+  };
+
+  handleFieldChange = async ({ value, label }) => {
+    const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
+      types: this.state.type.value
+    });
+
+    const documents = await client.fetch(
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
+      { types: this.state.type.value }
+    );
+
+    const shouldProceed = this.isSafeToProceed(documents, { value, label }, this.state.type);
+
+    if (shouldProceed) {
+      this.setState({ field: { value, label }, documents, count });
+
+      if (documents.length > 0) {
+        await setListOrder(this.state.documents, value);
+      }
+    }
   };
 
   moveCard = async (beforeIndex, afterIndex) => {
@@ -69,8 +160,8 @@ class OrderDocuments extends React.Component {
     });
 
     await Promise.all([
-      setOrder(card1._id, afterIndex, this.state.field),
-      setOrder(card2._id, beforeIndex, this.state.field)
+      setOrder(card1._id, afterIndex, this.state.field.value),
+      setOrder(card2._id, beforeIndex, this.state.field.value)
     ]);
   };
 
@@ -82,13 +173,17 @@ class OrderDocuments extends React.Component {
             <div className={styles.innerWrapper}>
               <TypeSection
                 {...this.state}
-                handleChange={this.handleChange}
+                handleTypeChange={this.handleTypeChange}
                 handleFieldChange={this.handleFieldChange}
+                refreshTypes={this.refreshTypes}
               />
               <DraggableSection
                 documents={this.state.documents}
+                count={this.state.count}
                 type={this.state.type}
                 moveCard={this.moveCard}
+                refreshDocuments={this.refreshDocuments}
+                loadMore={this.loadMore}
               />
             </div>
           </div>

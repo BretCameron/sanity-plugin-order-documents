@@ -3,6 +3,31 @@
   --background-color: #e4e8ed;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+button {
+  color: #7b8ca8;
+  background-color: transparent;
+  padding: calc(0.75rem - 1px) calc(2.75rem - 1px);
+  outline: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  border: 2px solid rgba(123, 140, 168, 0.35);
+  cursor: pointer;
+}
+
+button:hover {
+  background: #7b8ca8;
+  color: #ffffff;
+}
+
 .container {
   display: flex;
   width: 100%;
@@ -11,10 +36,11 @@
 
 .list {
   list-style-type: none;
-  padding: 0;
   min-width: 220px;
   max-width: 100%;
   overflow-y: auto;
+  margin-top: 0;
+  padding: 0;
 }
 
 .listItem:first-child {
@@ -25,6 +51,7 @@
   padding: 5px;
   border: var(--border-style);
   border-top: 0;
+  animation: fadeIn ease 1s;
 }
 
 .document {
@@ -85,6 +112,7 @@ hr {
   border-radius: 0.5rem;
   display: flex;
   align-items: center;
+  animation: fadeIn ease 0.5s;
 }
 
 .fieldsSelect {
@@ -110,4 +138,25 @@ hr {
 
 .fieldButton:hover {
   background: #eee;
+}
+
+.subheading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.refreshButton {
+  display: flex;
+  place-items: center;
+  height: 100%;
+  padding: 0.45rem 0.45rem 0.25rem 0.45rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
 }
