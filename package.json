@@ -5,9 +5,11 @@
   "main": "build/index.js",
   "scripts": {
     "start": "babel src -d build --copy-files --watch",
+    "develop": "yarn start",
+    "dev": "yarn start",
     "build": "babel src -d build --copy-files",
-    "lint": "eslint src/**/**",
-    "prepare": "yarn build"
+    "prepare": "yarn build",
+    "lint": "eslint src/**/**"
   },
   "homepage": "https://github.com/BretCameron/sanity-plugin-order-documents",
   "bugs": {

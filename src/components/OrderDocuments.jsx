@@ -10,7 +10,8 @@ import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
 import DraggableSection from "./organisms/DraggableSection";
 import TypeSection from "./organisms/TypeSection";
 
-const PAGE_SIZE = 100;
+const PAGE_SIZE = 25;
+// note: going above 25 can lead to Promises not resolving
 
 class OrderDocuments extends React.Component {
   state = {
@@ -30,8 +31,9 @@ class OrderDocuments extends React.Component {
     const length = this.state.documents.length;
 
     const newDocuments = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][${length}...${length +
-        PAGE_SIZE}] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${
+        this.state.field.value
+      } asc, order asc, _updatedAt desc)[${length}...${length + PAGE_SIZE}]`,
       { types: this.state.type.value }
     );
 
@@ -39,7 +41,7 @@ class OrderDocuments extends React.Component {
 
     this.setState({ documents });
 
-    // TODO call setListOrder on new docs
+    await setListOrder(newDocuments, this.state.field.value, length);
   };
 
   getTypes = () => {
@@ -71,14 +73,14 @@ class OrderDocuments extends React.Component {
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][0...${PAGE_SIZE}] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
       { types: this.state.type.value }
     );
 
     this.setState({ documents, count });
 
     if (documents.length > 0) {
-      await setListOrder(this.state.documents, this.state.field.value);
+      await setListOrder(documents, this.state.field.value);
     }
   };
 
@@ -106,7 +108,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][0...${PAGE_SIZE}] | order (${this.state.field.value} asc, order asc, _updatedAt desc)`,
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
       { types: value }
     );
 
@@ -118,7 +120,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
       });
 
       if (documents.length > 0) {
-        await setListOrder(this.state.documents, this.state.field.value);
+        await setListOrder(documents, this.state.field.value);
       }
     }
   };
@@ -129,7 +131,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types][0...${PAGE_SIZE}] | order (${value} asc, order asc, _updatedAt desc)`,
+      `*[!(_id in path("drafts.**")) && _type == $types] | order (${value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
       { types: this.state.type.value }
     );
 
