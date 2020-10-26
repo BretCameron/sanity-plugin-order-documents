@@ -2,7 +2,6 @@ import client from "part:@sanity/base/client";
 import { DEFAULT_FIELD_VALUE } from "../data";
 
 export const setOrder = async (_id, index, field = DEFAULT_FIELD_VALUE) => {
-  console.log(_id, index, field);
   return client
     .patch(_id)
     .set({ [field]: index })
