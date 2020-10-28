@@ -42,10 +42,27 @@ fields: [
 
 Now, when we query our dataset, we can order the results according to the `order` property.
 
+### Querying With GROQ
+
 For example, to query movies using Sanity's query language GROQ, we can write:
 
 ```groq
 *[_type == "movie"] | order(order asc)
+```
+
+### Querying With GraphQL
+
+Or, using Sanity's GraphQL API, we can write:
+
+```graphql
+query {
+  allMovie(sort: [{ order: ASC }]) {
+    _id
+    title
+    order
+    # more fields
+  }
+}
 ```
 
 Our custom order has been saved, and it will be reflected in the result!
