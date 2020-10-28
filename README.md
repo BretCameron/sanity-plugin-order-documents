@@ -109,6 +109,10 @@ fields: [
 
 Now, when we select the "movie" type in our plugin, we'll see a new dropdown in the top right corner. We can now choose between three fields: the default order field and our two custom fields.
 
+## Contributing
+
+I'd welcome any contributions, from fixing a typo to something more substantial. You can raise a PR in [the project's GitHub repository](https://github.com/BretCameron/sanity-plugin-order-documents).
+
 ## Development
 
 To develop this plugin, clone it into a local directory. Then, navigate to the root of the cloned repository and run:
@@ -134,11 +138,3 @@ Open `sanity.json` in the Sanity Studio project and append "order-documents" to 
 ```
 
 We're already watching our plugin for changes, so all that's left is to run our Sanity Studio with `sanity start`.
-
-## Limitations
-
-Right now, this plugin can be used to order the 100 most recently edited documents of a particular type. If you'd like to help add support for larger collections, consider contributing!
-
-## Contributing
-
-I'd welcome any contributions, from fixing a typo to something more substantial. You can raise a PR in [the project's GitHub repository](https://github.com/BretCameron/sanity-plugin-order-documents).
