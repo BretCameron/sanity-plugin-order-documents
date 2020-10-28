@@ -42,7 +42,7 @@ fields: [
 
 Now, when we query our dataset, we can order the results according to the `order` property.
 
-### Querying With GROQ
+### Querying with GROQ
 
 For example, to query movies using Sanity's query language GROQ, we can write:
 
@@ -50,9 +50,13 @@ For example, to query movies using Sanity's query language GROQ, we can write:
 *[_type == "movie"] | order(order asc)
 ```
 
-### Querying With GraphQL
+Our custom order has been saved, and it will be reflected in the result!
 
-Or, using Sanity's GraphQL API, we can write:
+There are a lot more GROQ examples in Sanity's [GROQ query cheat sheet](https://www.sanity.io/docs/query-cheat-sheet).
+
+### Querying with GraphQL
+
+Alternatively, using Sanity's GraphQL API, we can write:
 
 ```graphql
 query {
@@ -65,7 +69,8 @@ query {
 }
 ```
 
-Our custom order has been saved, and it will be reflected in the result!
+For more information, see [Sanity's GraphQL documentation](https://www.sanity.io/docs/graphql).
+
 
 ## Custom Fields
 
