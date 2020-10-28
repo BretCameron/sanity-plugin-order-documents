@@ -52,7 +52,7 @@ For example, to query movies using Sanity's query language GROQ, we can write:
 
 Our custom order has been saved, and it will be reflected in the result!
 
-There are a lot more GROQ examples in Sanity's [GROQ query cheat sheet](https://www.sanity.io/docs/query-cheat-sheet).
+There are a lot more GROQ examples in [Sanity's GROQ query cheat sheet](https://www.sanity.io/docs/query-cheat-sheet).
 
 ### Querying with GraphQL
 
