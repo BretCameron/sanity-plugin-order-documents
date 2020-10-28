@@ -44,7 +44,7 @@ Now, when we query our dataset, we can order the results according to the `order
 
 ### Querying with GROQ
 
-For example, to query movies using Sanity's query language GROQ, we can write:
+To query movies using Sanity's query language GROQ, we can write:
 
 ```groq
 *[_type == "movie"] | order(order asc)
