@@ -20,7 +20,7 @@ class OrderDocuments extends React.Component {
     types: [],
     type: { label: "", value: "" },
     field: { label: DEFAULT_FIELD_LABEL, value: DEFAULT_FIELD_VALUE },
-    fields: []
+    fields: [],
   };
 
   componentDidMount() {
@@ -56,7 +56,7 @@ class OrderDocuments extends React.Component {
 
     const fields = (selectedType ? selectedType.fields : []).map(({ name, title }) => ({
       value: name,
-      label: title
+      label: title,
     }));
 
     this.setState({ fields });
@@ -69,7 +69,7 @@ class OrderDocuments extends React.Component {
 
   refreshDocuments = async () => {
     const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
-      types: this.state.type.value
+      types: this.state.type.value,
     });
 
     const documents = await client.fetch(
@@ -104,7 +104,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
 
   handleTypeChange = async ({ value, label }) => {
     const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
-      types: value
+      types: value,
     });
 
     const documents = await client.fetch(
@@ -127,7 +127,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
 
   handleFieldChange = async ({ value, label }) => {
     const count = await client.fetch(`count(*[!(_id in path("drafts.**")) && _type == $types])`, {
-      types: this.state.type.value
+      types: this.state.type.value,
     });
 
     const documents = await client.fetch(
@@ -154,14 +154,14 @@ Override existing data? This is a one-time operation and cannot be reversed.`
       documents: update(this.state.documents, {
         $splice: [
           [beforeIndex, 1],
-          [afterIndex, 0, card1]
-        ]
-      })
+          [afterIndex, 0, card1],
+        ],
+      }),
     });
 
     await Promise.all([
       setOrder(card1._id, afterIndex, this.state.field.value),
-      setOrder(card2._id, beforeIndex, this.state.field.value)
+      setOrder(card2._id, beforeIndex, this.state.field.value),
     ]);
   };
 

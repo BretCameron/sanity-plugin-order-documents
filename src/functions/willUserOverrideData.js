@@ -1,3 +1,5 @@
+import { DEFAULT_FIELD_VALUE } from "../data";
+
 // returns true if it looks like using the Order Documents plugin will override existing data (for the given type and field)
 export const willUserOverrideData = (documents, field = DEFAULT_FIELD_VALUE) => {
   // for speed, test the first 5 entries only

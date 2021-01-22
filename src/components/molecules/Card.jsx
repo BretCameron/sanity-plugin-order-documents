@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
 const ItemTypes = {
-  CARD: "card"
+  CARD: "card",
 };
 
 const style = {
@@ -11,7 +11,7 @@ const style = {
   backgroundColor: "white",
   cursor: "move",
   display: "flex",
-  alignItems: "center"
+  alignItems: "center",
 };
 
 export const Card = ({ id, index, moveCard, jsx }) => {
@@ -54,13 +54,13 @@ export const Card = ({ id, index, moveCard, jsx }) => {
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
       item.index = hoverIndex;
-    }
+    },
   });
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.CARD, id, index },
-    collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));

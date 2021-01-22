@@ -12,7 +12,12 @@
     "prettier/prettier": "error",
     "import/no-extraneous-dependencies": "off",
     "import/unambiguous": "off",
-    "react/jsx-uses-react": 1
+    "react/jsx-uses-react": 1,
+    "complexity": ["error", 20],
+    "require-await": "off",
+    "no-shadow":"off",
+    "max-depth": ["error", 4],
+    "no-alert": "off"
   },
   "globals": {
     "__DEV__": true

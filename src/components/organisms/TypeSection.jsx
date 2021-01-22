@@ -1,7 +1,6 @@
 import React from "react";
 import Select from "react-select";
 import { DEFAULT_FIELD_LABEL, DEFAULT_FIELD_VALUE } from "../../data";
-import { getDocumentTypeNames } from "../../functions";
 import styles from "../../index.css";
 import { Tooltip } from "react-tippy";
 import QuestionIcon from "../atoms/QuestionIcon";
@@ -16,7 +15,7 @@ class TypeSection extends React.Component {
       fields,
       handleTypeChange,
       handleFieldChange,
-      refreshTypes
+      refreshTypes,
     } = this.props;
 
     if (!documents) {
@@ -29,11 +28,11 @@ class TypeSection extends React.Component {
 
     const selectorTypes = types.map(({ name, title }) => ({
       value: name,
-      label: title
+      label: title,
     }));
 
     const showFields =
-      fields.length > 1 && fields.findIndex(field => field.value === "order") !== -1;
+      fields.length > 1 && fields.findIndex((field) => field.value === "order") !== -1;
 
     return (
       <>
@@ -55,7 +54,7 @@ class TypeSection extends React.Component {
                 <div>
                   <Tooltip
                     html={
-                      <p style={{ margin: "0.75rem", maxWidth: "16rem" }}>
+                      <p className={styles.tooltipText}>
                         Use a custom field to order your documents. Fields must be hidden and have
                         type "number" to be listed here.
                       </p>

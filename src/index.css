@@ -125,6 +125,15 @@ hr {
   cursor: pointer;
 }
 
+.tooltipText {
+  margin: 0.75rem;
+  max-width: 16rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgb(153, 153, 153);
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
+
 @media (max-width: 42rem) {
   .flexSpaceBetween {
     flex-direction: column-reverse;

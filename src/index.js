@@ -21,5 +21,5 @@ export default {
   title: "Order Documents",
   name: "order-documents",
   icon,
-  component
+  component,
 };
