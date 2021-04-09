@@ -114,7 +114,28 @@ Override existing data? This is a one-time operation and cannot be reversed.`
 
     const shouldProceed = this.isSafeToProceed(documents, this.state.field, { value, label });
 
-    if (shouldProceed) {
+    if (documents && documents.length > 0 && shouldProceed) {
+      // check if the first document has no order field
+      const firstDocument = documents[0];
+      const firstDocumentOrderField = firstDocument[this.state.field.value];
+      const isFirstOrderUndefined = firstDocumentOrderField === undefined;
+
+      // if the first document has an order field, the plugin has been used at least once, and so we want to put documents with no order at the front
+      if (!isFirstOrderUndefined) {
+        for (let i = documents.length; i > 0; i--) {
+          const document = documents[i - 1];
+          const orderField = document[this.state.field.value];
+          const isOrderUndefined = orderField === undefined;
+
+          if (isOrderUndefined) {
+            documents.pop();
+            documents.unshift(document);
+          } else {
+            break;
+          }
+        }
+      }
+
       this.setState({ type: { value, label }, documents, count }, () => {
         this.getFields();
       });
