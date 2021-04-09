@@ -1,6 +1,10 @@
-## April 9, 2021
+## 0.0.14 (April 9, 2021)
 
 - By default, place new documents at the top of the list
+
+## 0.0.13
+
+- Upgrade dependencies
 
 ## 0.0.12 (January 22, 2021)
 
