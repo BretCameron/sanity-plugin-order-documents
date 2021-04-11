@@ -40,7 +40,7 @@ fields: [
 ],
 ```
 
-Now, when we query our dataset, we can order the results according to the `order` property.
+Now, when we query our dataset, we can order the results according to the `order` property. New documents will be added to the top of the list.
 
 ### Querying with GROQ
 
@@ -56,7 +56,7 @@ There are a lot more GROQ examples in [Sanity's GROQ query cheat sheet](https://
 
 ### Querying with GraphQL
 
-Alternatively, using Sanity's GraphQL API, we can write:
+Alternatively, using Sanity's GraphQL API (`gen2` or `gen3`), we can write:
 
 ```graphql
 query {
@@ -71,6 +71,9 @@ query {
 
 For more information, see [Sanity's GraphQL documentation](https://www.sanity.io/docs/graphql).
 
+If you are using `gen1` of Sanity's GraphQL API, replace `allMovie` with `allMovies`.
+
+Remember, if your using a different GraphQL API, such as [Gatsby's](https://www.gatsbyjs.com/docs/graphql-reference/#sort), your queries may look a little different. In that case, please consult the documentation for whatever API you're using.
 
 ## Custom Fields
 
