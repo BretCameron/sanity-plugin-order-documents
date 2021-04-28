@@ -1,3 +1,7 @@
+## 0.0.17 (April 28, 2021)
+
+- Upgrade Babel and ESlint
+
 ## 0.0.15-16 (April 11, 2021)
 
 - Improve GraphQL section of README.md
