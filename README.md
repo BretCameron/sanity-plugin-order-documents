@@ -73,7 +73,7 @@ For more information, see [Sanity's GraphQL documentation](https://www.sanity.io
 
 If using `gen1` of Sanity's GraphQL API, replace `allMovie` with `allMovies`.
 
-Remember, if you're using a different GraphQL API, such as [Gatsby's](https://www.gatsbyjs.com/docs/graphql-reference/#sort), your queries may look a little different. In that case, please consult the documentation of that API.
+Remember, if you're using a different GraphQL API, such as [Gatsby's](https://www.gatsbyjs.com/docs/graphql-reference/#sort), your queries may look a little different. In that case, please consult the documentation of the relevant API.
 
 ## Custom Fields
 
