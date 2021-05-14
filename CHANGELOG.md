@@ -1,3 +1,8 @@
+## 0.0.18 (May 14, 2021)
+
+- Minor UI improvements
+- Upgrade dependencies (Babel, ESlint, Prettier and React Select)
+
 ## 0.0.17 (April 28, 2021)
 
 - Upgrade Babel and ESlint

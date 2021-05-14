@@ -63,9 +63,11 @@ button:hover {
 .outerWrapper {
   max-width: 60rem;
   width: 100%;
-  margin: 0 auto;
+  margin: 1rem auto;
   background: white;
-  border: 1rem solid var(--background-color);
+  border: 1px solid var(--background-color);
+  box-shadow: 8px 8px 2px var(--background-color);
+  border-radius: 4px;
 }
 
 .innerWrapper {
