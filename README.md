@@ -111,13 +111,13 @@ fields: [
     type: "number",
     hidden: true,
   },
-    {
+  {
     name: "audiencePick",
     title: "Audience Pick",
     type: "number",
     hidden: true,
   },
-    {
+  {
     name: "criticsPick",
     title: "Critics' Pick",
     type: "number",
