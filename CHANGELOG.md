@@ -1,3 +1,8 @@
+## 0.0.19 (May 21, 2021)
+
+- Use less generic class names, to minimize conflicts with other plugins’ styles
+- Upgrade dependencies (@babel/core, @babel/plugin-proposal-class-properties, @babel/plugin-transform-runtime, eslint-plugin-import)
+
 ## 0.0.18 (May 14, 2021)
 
 - Minor UI improvements
