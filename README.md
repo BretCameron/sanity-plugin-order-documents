@@ -75,6 +75,22 @@ If using `gen1` of Sanity's GraphQL API, replace `allMovie` with `allMovies`.
 
 Remember, if you're using a different GraphQL API, such as [Gatsby's](https://www.gatsbyjs.com/docs/graphql-reference/#sort), your queries may look a little different. In that case, please consult the documentation of the relevant API.
 
+## Ordering in the Desk View
+
+You can make your Sanity Desk reflect your newly implemented order by adding an `orderings` array in the relevant schema. For example, in `movie.js`, we can add:
+
+```js
+orderings: [
+  {
+    title: "Manual order",
+    name: "manualOrder",
+    by: [{ field: "order", direction: "asc" }],
+  },
+],
+```
+
+Then, once in the Desk view, click settings (in the top right corner). You will now be able to "Sort by Manual order". You can also use `orderings` to sort by custom fields – explained below.
+
 ## Custom Fields
 
 Want to save multiple orders for the same document type?
@@ -95,13 +111,13 @@ fields: [
     type: "number",
     hidden: true,
   },
-    {
+  {
     name: "audiencePick",
     title: "Audience Pick",
     type: "number",
     hidden: true,
   },
-    {
+  {
     name: "criticsPick",
     title: "Critics' Pick",
     type: "number",
