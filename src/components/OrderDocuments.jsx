@@ -189,9 +189,9 @@ Override existing data? This is a one-time operation and cannot be reversed.`
   render() {
     return (
       <DndProvider backend={HTML5Backend}>
-        <div className={styles.container}>
-          <div className={styles.outerWrapper}>
-            <div className={styles.innerWrapper}>
+        <div className={styles.orderDocumentsFlexContainer}>
+          <div className={styles.orderDocumentsOuterWrapper}>
+            <div className={styles.orderDocumentsInnerWrapper}>
               <TypeSection
                 {...this.state}
                 handleTypeChange={this.handleTypeChange}

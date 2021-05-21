@@ -16,7 +16,7 @@ class DraggableSection extends React.Component {
 
     if (type && type.value && !documents.length) {
       return (
-        <div className={styles.marginTop}>
+        <div className={styles.orderDocumentsMarginTop}>
           <Spinner message="Loading..." center />
         </div>
       );
@@ -26,18 +26,18 @@ class DraggableSection extends React.Component {
 
     return (
       <>
-        <hr className={styles.rule} />
-        <div className={styles.subheading}>
+        <hr className={styles.orderDocumentsRule} />
+        <div className={styles.orderDocumentsSubheading}>
           <p>
             <strong>Step 2: Drag and Drop to Re-order</strong>
           </p>
-          <button className={styles.refreshButton} onClick={refreshDocuments}>
+          <button className={styles.orderDocumentsRefreshButton} onClick={refreshDocuments}>
             <RefreshIcon title="Refresh Documents" />
           </button>
         </div>
-        <ul className={styles.list}>
+        <ul className={styles.orderDocumentsList}>
           {documents.map((document, index) => (
-            <li key={document._id} className={styles.listItem}>
+            <li key={document._id} className={styles.orderDocumentsListItem}>
               <Card
                 key={document._id}
                 index={index}
@@ -50,8 +50,10 @@ class DraggableSection extends React.Component {
           ))}
         </ul>
         {hasReachedEnd ? null : (
-          <div className={styles.buttonWrapper}>
-            <button onClick={loadMore}>Load More</button>
+          <div className={styles.orderDocumentsButtonWrapper}>
+            <button className={styles.orderDocumentsButton} onClick={loadMore}>
+              Load More
+            </button>
           </div>
         )}
       </>

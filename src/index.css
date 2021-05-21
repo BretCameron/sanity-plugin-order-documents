@@ -1,8 +1,3 @@
-:root {
-  --border-style: 1px solid rgba(0, 0, 0, 0.1);
-  --background-color: #e4e8ed;
-}
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -12,7 +7,7 @@
   }
 }
 
-button {
+.orderDocumentsButton {
   color: #7b8ca8;
   background-color: transparent;
   padding: calc(0.75rem - 1px) calc(2.75rem - 1px);
@@ -23,18 +18,37 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.orderDocumentsButton:hover {
   background: #7b8ca8;
   color: #ffffff;
 }
 
-.container {
+.orderDocumentsRefreshButton {
+  color: #7b8ca8;
+  background-color: transparent;
+  padding: 0.45rem 0.45rem 0.25rem 0.45rem;
+  outline: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  border: 2px solid rgba(123, 140, 168, 0.35);
+  cursor: pointer;
+  display: flex;
+  place-items: center;
+  height: 100%;
+}
+
+.orderDocumentsRefreshButton:hover {
+  background: #7b8ca8;
+  color: #ffffff;
+}
+
+.orderDocumentsFlexContainer {
   display: flex;
   width: 100%;
   position: absolute;
 }
 
-.list {
+.orderDocumentsList {
   list-style-type: none;
   min-width: 220px;
   max-width: 100%;
@@ -43,60 +57,55 @@ button:hover {
   padding: 0;
 }
 
-.listItem:first-child {
-  border-top: var(--border-style);
+.orderDocumentsListItem:first-child {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.listItem {
-  padding: 5px;
-  border: var(--border-style);
+.orderDocumentsListItem {
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-top: 0;
+  padding: 5px;
   animation: fadeIn ease 1s;
 }
 
-.document {
-  margin: 0;
-  padding: 0 10px;
-  max-width: 66%;
-}
-
-.outerWrapper {
+.orderDocumentsOuterWrapper {
   max-width: 60rem;
   width: 100%;
   margin: 1rem auto;
   background: white;
-  border: 1px solid var(--background-color);
-  box-shadow: 8px 8px 2px var(--background-color);
+  border: 1px solid #e4e8ed;
+  box-shadow: 8px 8px 2px #e4e8ed;
   border-radius: 4px;
 }
 
-.innerWrapper {
+.orderDocumentsInnerWrapper {
   padding: 0.5rem 3rem 3rem 3rem;
   margin-top: 2rem;
 }
 
-.marginTop {
+.orderDocumentsMarginTop {
   margin-top: 3rem;
 }
 
-.noTopMargin {
+.orderDocumentsNoTopMargin {
   margin-top: 0;
 }
 
-hr {
+.orderDocumentsHr {
   border-top: 1px solid #ddd;
 }
 
-.rule {
+.orderDocumentsRule {
+  border-top: 1px solid #ddd;
   margin-top: 1.25rem;
 }
 
-.flexSpaceBetween {
+.orderDocumentsFlexSpaceBetween {
   display: flex;
   justify-content: space-between;
 }
 
-.flexEnd {
+.orderDocumentsFlexEnd {
   flex: 0.5;
   display: flex;
   flex-direction: column;
@@ -104,7 +113,7 @@ hr {
   width: 100%;
 }
 
-.selectWrapper {
+.orderDocumentsSelectWrapper {
   margin-bottom: 1rem;
   width: 15rem;
   text-align: left;
@@ -117,17 +126,17 @@ hr {
   animation: fadeIn ease 0.5s;
 }
 
-.fieldsSelect {
+.orderDocumentsFieldsSelect {
   width: 100%;
 }
 
-.tooltip {
+.orderDocumentsTooltip {
   margin-top: -0.25rem;
   margin-left: 0.5rem;
   cursor: pointer;
 }
 
-.tooltipText {
+.orderDocumentsTooltipText {
   margin: 0.75rem;
   max-width: 16rem;
   background: rgba(255, 255, 255, 0.9);
@@ -137,37 +146,23 @@ hr {
 }
 
 @media (max-width: 42rem) {
-  .flexSpaceBetween {
+  .orderDocumentsFlexSpaceBetween {
     flex-direction: column-reverse;
   }
 
-  .selectWrapper {
+  .orderDocumentsSelectWrapper {
     width: 100%;
     max-width: 12.5rem;
   }
 }
 
-.fieldButton:hover {
-  background: #eee;
-}
-
-.subheading {
+.orderDocumentsSubheading {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.refreshButton {
-  display: flex;
-  place-items: center;
-  height: 100%;
-  padding: 0.45rem 0.45rem 0.25rem 0.45rem;
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
-.buttonWrapper {
+.orderDocumentsButtonWrapper {
   display: flex;
   justify-content: center;
 }

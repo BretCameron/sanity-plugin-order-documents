@@ -8,19 +8,12 @@ import RefreshIcon from "../atoms/RefreshIcon";
 
 class TypeSection extends React.Component {
   render() {
-    const {
-      documents,
-      type,
-      types,
-      fields,
-      handleTypeChange,
-      handleFieldChange,
-      refreshTypes,
-    } = this.props;
+    const { documents, type, types, fields, handleTypeChange, handleFieldChange, refreshTypes } =
+      this.props;
 
     if (!documents) {
       return (
-        <div className={styles.list}>
+        <div className={styles.orderDocumentsList}>
           <Spinner message="Loading..." center />
         </div>
       );
@@ -36,16 +29,16 @@ class TypeSection extends React.Component {
 
     return (
       <>
-        <div className={styles.flexSpaceBetween}>
+        <div className={styles.orderDocumentsFlexSpaceBetween}>
           <div>
-            <h2 className={styles.noTopMargin}>Order Documents</h2>
+            <h2 className={styles.orderDocumentsNoTopMargin}>Order Documents</h2>
             <p>Order your documents via drag-and-drop.</p>
           </div>
-          <div className={styles.flexEnd}>
+          <div className={styles.orderDocumentsFlexEnd}>
             {showFields ? (
-              <div className={styles.selectWrapper}>
+              <div className={styles.orderDocumentsSelectWrapper}>
                 <Select
-                  className={styles.fieldsSelect}
+                  className={styles.orderDocumentsFieldsSelect}
                   options={fields}
                   isSearchable
                   onChange={handleFieldChange}
@@ -54,7 +47,7 @@ class TypeSection extends React.Component {
                 <div>
                   <Tooltip
                     html={
-                      <p className={styles.tooltipText}>
+                      <p className={styles.orderDocumentsTooltipText}>
                         Use a custom field to order your documents. Fields must be hidden and have
                         type "number" to be listed here.
                       </p>
@@ -62,7 +55,7 @@ class TypeSection extends React.Component {
                     position="right-start"
                     trigger="mouseenter"
                   >
-                    <div className={styles.tooltip}>
+                    <div className={styles.orderDocumentsTooltip}>
                       <QuestionIcon />
                     </div>
                   </Tooltip>
@@ -71,12 +64,12 @@ class TypeSection extends React.Component {
             ) : null}
           </div>
         </div>
-        <hr />
-        <div className={styles.subheading}>
+        <hr className={styles.orderDocumentsHr} />
+        <div className={styles.orderDocumentsSubheading}>
           <p>
             <strong>Step 1: Choose a Type</strong>
           </p>
-          <button className={styles.refreshButton} onClick={refreshTypes}>
+          <button className={styles.orderDocumentsRefreshButton} onClick={refreshTypes}>
             <RefreshIcon title="Refresh Types" />
           </button>
         </div>
