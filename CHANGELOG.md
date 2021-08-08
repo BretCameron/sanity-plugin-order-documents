@@ -1,3 +1,7 @@
+## 0.0.20 (August 8, 2021)
+
+- Upgrade dependencies (Babel, ESlint and Prettier)
+
 ## 0.0.19 (May 21, 2021)
 
 - Use less generic class names, to minimize conflicts with other plugins’ styles
