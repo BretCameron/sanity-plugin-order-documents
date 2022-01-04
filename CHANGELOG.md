@@ -1,3 +1,7 @@
+## 0.0.21 (January 4, 2022)
+
+- Upgrade dependencies (react-dnd, react-select, Babel, ESlint and Prettier)
+
 ## 0.0.20 (August 8, 2021)
 
 - Upgrade dependencies (Babel, ESlint and Prettier)
