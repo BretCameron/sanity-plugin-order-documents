@@ -2,13 +2,16 @@ import React from "react";
 import update from "immutability-helper";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import client from "part:@sanity/base/client";
+import sanityClient from "part:@sanity/base/client";
+import { CLIENT_API_VERSION } from "../_constants";
 import { withRouterHOC } from "part:@sanity/base/router";
 import styles from "../index.css";
 import { setOrder, setListOrder, getDocumentTypeNames, willUserOverrideData } from "../functions";
 import { DEFAULT_FIELD_VALUE, DEFAULT_FIELD_LABEL } from "../data";
 import DraggableSection from "./organisms/DraggableSection";
 import TypeSection from "./organisms/TypeSection";
+
+const client = sanityClient.withConfig({ apiVersion: CLIENT_API_VERSION });
 
 const PAGE_SIZE = 25;
 // note: going above 25 can lead to Promises not resolving
@@ -31,7 +34,7 @@ class OrderDocuments extends React.Component {
     const length = this.state.documents.length;
 
     const newDocuments = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types] | order (${
+      `*[!(_id in path("drafts.**")) && _type == $types] | order(${
         this.state.field.value
       } asc, order asc, _updatedAt desc)[${length}...${length + PAGE_SIZE}]`,
       { types: this.state.type.value }
@@ -73,7 +76,7 @@ class OrderDocuments extends React.Component {
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types] | order (${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
+      `*[!(_id in path("drafts.**")) && _type == $types] | order(${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
       { types: this.state.type.value }
     );
 
@@ -108,7 +111,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types] | order (${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
+      `*[!(_id in path("drafts.**")) && _type == $types] | order(${this.state.field.value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
       { types: value }
     );
 
@@ -152,7 +155,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
     });
 
     const documents = await client.fetch(
-      `*[!(_id in path("drafts.**")) && _type == $types] | order (${value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
+      `*[!(_id in path("drafts.**")) && _type == $types] | order(${value} asc, order asc, _updatedAt desc)[0...${PAGE_SIZE}]`,
       { types: this.state.type.value }
     );
 

@@ -1,3 +1,7 @@
+## 0.0.22 (January 4, 2022)
+
+- Specify client API version to fix `Error: Used property "fetch" on versionless client - this is deprecated.`
+
 ## 0.0.21 (January 4, 2022)
 
 - Upgrade dependencies (react-dnd, react-select, Babel, ESlint and Prettier)
