@@ -8,7 +8,7 @@ import RefreshIcon from "../atoms/RefreshIcon";
 
 class DraggableSection extends React.Component {
   render() {
-    const { documents, count, type, moveCard, refreshDocuments, loadMore } = this.props;
+    const { documents, count, type, moveCard, onDragEnd, refreshDocuments, loadMore } = this.props;
 
     if (!(type && type.value) && !documents.length) {
       return null;
@@ -44,6 +44,7 @@ class DraggableSection extends React.Component {
                 id={document._id}
                 text={document.title}
                 moveCard={moveCard}
+                onDragEnd={onDragEnd}
                 jsx={<Preview value={document} type={schema.get(document._type)} />}
               />
             </li>

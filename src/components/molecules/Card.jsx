@@ -14,7 +14,7 @@ const style = {
   alignItems: "center",
 };
 
-export const Card = ({ id, index, moveCard, jsx }) => {
+export const Card = ({ id, index, moveCard, onDragEnd, jsx }) => {
   const ref = useRef(null);
 
   const [{ handlerId }, drop] = useDrop({
@@ -81,6 +81,9 @@ export const Card = ({ id, index, moveCard, jsx }) => {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    end: () => {
+      onDragEnd()
+    }
   });
 
   const opacity = isDragging ? 0 : 1;

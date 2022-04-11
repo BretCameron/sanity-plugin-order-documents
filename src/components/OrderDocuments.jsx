@@ -182,12 +182,11 @@ Override existing data? This is a one-time operation and cannot be reversed.`
         ],
       }),
     });
-
-    await Promise.all([
-      setOrder(card1._id, afterIndex, this.state.field.value),
-      setOrder(card2._id, beforeIndex, this.state.field.value),
-    ]);
   };
+
+  onDragEnd = async () => {
+    await setListOrder(this.state.documents, this.state.field.value);
+  }
 
   render() {
     return (
@@ -206,6 +205,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
                 count={this.state.count}
                 type={this.state.type}
                 moveCard={this.moveCard}
+                onDragEnd={this.onDragEnd}
                 refreshDocuments={this.refreshDocuments}
                 loadMore={this.loadMore}
               />
