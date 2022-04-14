@@ -12,9 +12,9 @@ export const setOrder = async (_id, index, field = DEFAULT_FIELD_VALUE) => {
 };
 
 export const setListOrder = async (list, field = DEFAULT_FIELD_VALUE, start = 0) => {
-  return Promise.all(
-    list.map(({ _id }, index) => {
-      return setOrder(_id, index + start, field);
-    })
-  );
+  const transaction = list.reduce((trx, {_id}, index) => {
+    return trx.patch(client.patch(_id).set({ [field]: index + start }));
+  }, client.transaction())
+
+  return transaction.commit();
 };
