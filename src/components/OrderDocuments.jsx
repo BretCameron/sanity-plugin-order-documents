@@ -186,7 +186,7 @@ Override existing data? This is a one-time operation and cannot be reversed.`
 
   onDragEnd = async () => {
     await setListOrder(this.state.documents, this.state.field.value);
-  }
+  };
 
   render() {
     return (
