@@ -1,3 +1,8 @@
+## 0.0.23 (July 24, 2022)
+
+- Upgrade dependencies (react-dnd, react-select, Babel, ESlint and Prettier)
+- Fix order race condition (credit: RokkinCat)
+
 ## 0.0.22 (January 4, 2022)
 
 - Specify client API version to fix `Error: Used property "fetch" on versionless client - this is deprecated.`
