@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-order-documents",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "A Sanity Studio plugin that helps you order your documents via drag-and-drop.",
   "main": "build/index.js",
   "scripts": {
