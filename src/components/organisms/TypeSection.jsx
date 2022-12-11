@@ -1,6 +1,5 @@
 import React from "react";
-import Select from "react-select";
-import { DEFAULT_FIELD_LABEL, DEFAULT_FIELD_VALUE } from "../../data";
+import { Select } from "../molecules/Select";
 import styles from "../../index.css";
 import { Tooltip } from "react-tippy";
 import QuestionIcon from "../atoms/QuestionIcon";
@@ -41,8 +40,9 @@ class TypeSection extends React.Component {
                   className={styles.orderDocumentsFieldsSelect}
                   options={fields}
                   isSearchable
-                  onChange={handleFieldChange}
-                  defaultValue={{ value: DEFAULT_FIELD_VALUE, label: DEFAULT_FIELD_LABEL }}
+                  onChange={({ value, label }) => {
+                    handleFieldChange({ value, label });
+                  }}
                 />
                 <div>
                   <Tooltip
@@ -73,7 +73,13 @@ class TypeSection extends React.Component {
             <RefreshIcon title="Refresh Types" />
           </button>
         </div>
-        <Select options={selectorTypes} isSearchable onChange={handleTypeChange} value={type} />
+        <Select
+          value={type.value}
+          options={selectorTypes}
+          onChange={({ value, label }) => {
+            handleTypeChange({ value, label });
+          }}
+        />
       </>
     );
   }

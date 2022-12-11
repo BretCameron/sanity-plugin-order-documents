@@ -59,7 +59,7 @@ class OrderDocuments extends React.Component {
 
     const fields = (selectedType ? selectedType.fields : []).map(({ name, title }) => ({
       value: name,
-      label: title,
+      label: title === "Order" ? "Order (default)" : title,
     }));
 
     this.setState({ fields });
