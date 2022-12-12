@@ -1,10 +1,10 @@
 import React from "react";
-import Select from "react-select";
-import { DEFAULT_FIELD_LABEL, DEFAULT_FIELD_VALUE } from "../../data";
+import { Select } from "../molecules/Select";
 import styles from "../../index.css";
 import { Tooltip } from "react-tippy";
 import QuestionIcon from "../atoms/QuestionIcon";
 import RefreshIcon from "../atoms/RefreshIcon";
+import { DEFAULT_FIELD_LABEL, DEFAULT_FIELD_VALUE } from "../../data";
 
 class TypeSection extends React.Component {
   render() {
@@ -40,9 +40,12 @@ class TypeSection extends React.Component {
                 <Select
                   className={styles.orderDocumentsFieldsSelect}
                   options={fields}
+                  label={DEFAULT_FIELD_LABEL}
+                  value={DEFAULT_FIELD_VALUE}
                   isSearchable
-                  onChange={handleFieldChange}
-                  defaultValue={{ value: DEFAULT_FIELD_VALUE, label: DEFAULT_FIELD_LABEL }}
+                  onChange={({ value, label }) => {
+                    handleFieldChange({ value, label });
+                  }}
                 />
                 <div>
                   <Tooltip
@@ -73,7 +76,14 @@ class TypeSection extends React.Component {
             <RefreshIcon title="Refresh Types" />
           </button>
         </div>
-        <Select options={selectorTypes} isSearchable onChange={handleTypeChange} value={type} />
+        <Select
+          label={type.label}
+          value={type.value}
+          options={selectorTypes}
+          onChange={({ value, label }) => {
+            handleTypeChange({ value, label });
+          }}
+        />
       </>
     );
   }

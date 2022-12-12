@@ -35,10 +35,11 @@
   display: flex;
   place-items: center;
   height: 100%;
+  transition: 200ms ease-out;
 }
 
 .orderDocumentsRefreshButton:hover {
-  background: #7b8ca8;
+  background: rgba(123, 140, 168, 0.35);
   color: #ffffff;
 }
 
@@ -115,7 +116,6 @@
 
 .orderDocumentsSelectWrapper {
   margin-bottom: 1rem;
-  width: 15rem;
   text-align: left;
   transition: 250ms ease-out;
   padding: 1rem 0.75rem 1rem 1rem;
@@ -165,4 +165,118 @@
 .orderDocumentsButtonWrapper {
   display: flex;
   justify-content: center;
+}
+
+.orderDocumentsSelectIconsSection {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  width: 100%;
+  padding: 10px 6px;
+  list-style: none;
+  font-size: 1rem;
+  width: 100%;
+  border-radius: 4px;
+  color: #253858;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.33rem;
+  pointer-events: none;
+}
+
+.orderDocumentsSelectIconsSeparator {
+  display: inline-block;
+  width: 1px;
+  margin-left: 1px solid rgb(204, 204, 204);
+  height: calc(2rem - 10px);
+  translate: 0 -3px;
+  background-color: rgb(204, 204, 204);
+  box-sizing: border-box;
+}
+
+.orderDocumentsSelectOptionsList {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  border-radius: 4px;
+  max-height: 12rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+.orderDocumentsSelectOptionsListOpen {
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.orderDocumentsSelectOptionsListItem {
+  font-size: 1rem;
+  border-bottom: none;
+  list-style: none;
+  cursor: pointer;
+  transition: 200ms;
+  background: #fff;
+  color: #253858;
+  padding: 8px 6px;
+}
+
+.orderDocumentsSelectOptionsListItemFirst,
+.orderDocumentsSelectOptionsListItemLast {
+  border-radius: 4px;
+}
+
+.orderDocumentsSelectOptionsListItemFirst {
+  border-radius: 4px 4px 0 0;
+}
+.orderDocumentsSelectOptionsListItemLast {
+  border-radius: 0 0 4px 4px;
+}
+
+.orderDocumentsSelectOptionsListItemSelected {
+  background: #2684ff;
+  color: #fff;
+}
+
+.orderDocumentsSelectOptionsListItem:hover {
+  color: #253858;
+  background: rgba(38, 132, 255, 0.08);
+}
+
+.orderDocumentsSelectOptionsListItem:focus {
+  color: #253858;
+  background: rgba(38, 132, 255, 0.08);
+}
+
+.orderDocumentsSelectInputWrapper {
+  cursor: pointer;
+  position: relative;
+}
+
+.orderDocumentsSelectInput {
+  width: calc(100% - 14px);
+  margin: 0;
+  padding: 8px 6px;
+  cursor: pointer;
+  border: 1px solid rgb(204, 204, 204);
+  list-style: none;
+  font-size: 1rem;
+  border-radius: 4px;
+  color: #253858;
+}
+
+.orderDocumentsArrowIconWrapper svg {
+  transition: 200ms;
+  cursor: pointer;
+  fill: rgb(204, 204, 204);
+  translate: 0 -1px;
+  pointer-events: all;
+}
+
+.orderDocumentsArrowIconWrapper svg:hover {
+  fill: #253858;
 }
