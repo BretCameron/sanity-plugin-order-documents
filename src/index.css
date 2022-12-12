@@ -35,10 +35,11 @@
   display: flex;
   place-items: center;
   height: 100%;
+  transition: 200ms ease-out;
 }
 
 .orderDocumentsRefreshButton:hover {
-  background: #7b8ca8;
+  background: rgba(123, 140, 168, 0.35);
   color: #ffffff;
 }
 
@@ -181,6 +182,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 0.33rem;
+  pointer-events: none;
 }
 
 .orderDocumentsSelectIconsSeparator {
@@ -259,6 +261,7 @@
   width: calc(100% - 14px);
   margin: 0;
   padding: 8px 6px;
+  cursor: pointer;
   border: 1px solid rgb(204, 204, 204);
   list-style: none;
   font-size: 1rem;
@@ -271,6 +274,7 @@
   cursor: pointer;
   fill: rgb(204, 204, 204);
   translate: 0 -1px;
+  pointer-events: all;
 }
 
 .orderDocumentsArrowIconWrapper svg:hover {
