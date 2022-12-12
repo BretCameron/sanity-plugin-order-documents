@@ -49,7 +49,9 @@ class OrderDocuments extends React.Component {
 
   getTypes = () => {
     const types = getDocumentTypeNames();
-    this.setState({ types });
+    this.setState({ types, type: { value: types[0].name, label: types[0].title } }, async () => {
+      await this.handleTypeChange({ value: types[0].name, label: types[0].title });
+    });
   };
 
   getFields = () => {

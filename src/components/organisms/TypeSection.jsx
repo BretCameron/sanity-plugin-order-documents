@@ -4,6 +4,7 @@ import styles from "../../index.css";
 import { Tooltip } from "react-tippy";
 import QuestionIcon from "../atoms/QuestionIcon";
 import RefreshIcon from "../atoms/RefreshIcon";
+import { DEFAULT_FIELD_LABEL, DEFAULT_FIELD_VALUE } from "../../data";
 
 class TypeSection extends React.Component {
   render() {
@@ -39,6 +40,8 @@ class TypeSection extends React.Component {
                 <Select
                   className={styles.orderDocumentsFieldsSelect}
                   options={fields}
+                  label={DEFAULT_FIELD_LABEL}
+                  value={DEFAULT_FIELD_VALUE}
                   isSearchable
                   onChange={({ value, label }) => {
                     handleFieldChange({ value, label });
@@ -74,6 +77,7 @@ class TypeSection extends React.Component {
           </button>
         </div>
         <Select
+          label={type.label}
           value={type.value}
           options={selectorTypes}
           onChange={({ value, label }) => {
